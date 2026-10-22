@@ -740,7 +740,10 @@ const I18N = {
   nl: {
     // steps, daily goal and advice
     ang_n_easy: 'weinig gedraaid', ang_n_mid: 'meer gedraaid', ang_n_all: 'alle kanten op',
-    step_of: 'Stap {n} van {m}', today: 'Vandaag', today_x: '{n} van 4 rondes', today_done: 'Dagdoel gehaald.',
+    sched: '4 keer per dag · ongeveer 1 minuut per keer · minstens 1 uur ertussen', next_at: 'Volgende oefenmoment: vanaf {time}.', next_now: 'Je kunt nu je volgende oefenmoment doen.', extra_round: 'Binnen een uur na het vorige oefenmoment telt een ronde niet als nieuw oefenmoment, maar wel voor je voortgang.',
+    grow: 'De rondes worden elke oefendag 2 plaatjes langer, tot 20. Dat is de opbouw uit de richtlijn.', done_btn: 'Klaar', remaining: 'Vandaag nog {n}.',
+    ob4_5: 'De ronde begint met 10 plaatjes en wordt elke oefendag 2 plaatjes langer, tot 20.',
+    step_of: 'Stap {n} van {m}', today: 'Vandaag', today_x: '{n} van 4 oefenmomenten', today_done: 'Dagdoel gehaald: 4 oefenmomenten. Morgen weer.',
     adv_up: 'Je haalt de doelen op deze stap. Volgende stap: {name}.', adv_up_yes: 'Ja, volgende stap', adv_stay: 'Nog even hier blijven',
     adv_back: 'Deze stap gaat nog moeilijk: minder dan 6 van de 10 goed, of erg traag. Advies: een stap terug naar {name}.', adv_back_yes: 'Stap terug', adv_back_no: 'Toch hier blijven',
     adv_goal: 'Doel van stap 1 gehaald: een week lang 80% of meer goed, binnen 2 seconden, en links en rechts even snel. De volgende fase van GMI is bewegingen voorstellen.',
@@ -774,12 +777,12 @@ const I18N = {
     ob2_3: 'Na elke ronde zie je hoe snel je was, voor links en voor rechts apart.',
     ob2_why: 'Waarom: bij CRPS verwerken de hersenen de aangedane voet vaak anders. Links en rechts herkennen activeert de hersengebieden die bewegingen voorbereiden, zonder dat je de voet hoeft te bewegen.',
     ob4_h: 'Hoe je oefent',
-    ob4_1: 'Kort en vaak: minstens 4 keer per dag een korte ronde.',
+    ob4_1: '4 keer per dag een korte ronde van ongeveer 1 minuut, verspreid over de dag. Bijvoorbeeld \'s ochtends, rond de middag, aan het eind van de middag en \'s avonds. Minstens 1 uur ertussen.',
     ob4_2: 'Fouten maken is normaal.',
     ob4_3: 'Neemt de pijn toe tijdens het oefenen? Stop dan.',
     ob4_4: 'Je begint bij de schoen. De app zegt vanzelf wanneer je een stap verder kunt, of juist terug.',
     ob_start: 'Start de eerste ronde', ob_look: 'Eerst rondkijken',
-    next_h: 'Volgende ronde', next_meta: '{n} plaatjes · ongeveer {m} min',
+    next_h: 'Volgende ronde', next_meta: '{n} plaatjes · ongeveer 1 minuut',
     start: 'Start ronde',
     adjust: 'Zelf aanpassen',
     rec_ready: 'Je bent klaar voor het volgende niveau: {name}.', rec_go: 'Naar niveau {n}',
@@ -795,7 +798,7 @@ const I18N = {
     feedback: 'Laat na elk antwoord zien of het goed was', photo_cat: "Welke foto's",
     cat_all: 'Alles', cat_shoe: 'Schoen', cat_hand: 'Hand', cat_sock: 'Voet in sok', cat_foot: 'Voet',
     tips_h: 'Tips',
-    tip0: 'Begin met 10 plaatjes per ronde, minstens 4 keer per dag. Gaat dat goed, doe er elke dag 1 of 2 bij.',
+    tip0: '4 keer per dag een korte ronde, verspreid over de dag, met minstens 1 uur ertussen. Vaker kort oefenen werkt beter dan één keer lang.',
     tip1: 'Neemt de pijn toe tijdens het oefenen? Stop dan.',
     tip2: 'Merk je dat het na het oefenen erger wordt, of de dag erna? Doe minder plaatjes of ga een stap terug.',
     tip3: 'Doet kijken naar de plaatjes pijn? Zet de snelheidsmodus aan, of stel je voor dat het de voet van iemand anders is.',
@@ -856,7 +859,10 @@ const I18N = {
   en: {
     // steps, daily goal and advice
     ang_n_easy: 'slightly rotated', ang_n_mid: 'more rotated', ang_n_all: 'every direction',
-    step_of: 'Step {n} of {m}', today: 'Today', today_x: '{n} of 4 rounds', today_done: 'Daily goal reached.',
+    sched: '4 times a day · about 1 minute each · at least 1 hour in between', next_at: 'Next practice moment: from {time}.', next_now: 'You can do your next practice moment now.', extra_round: 'Within an hour of the previous practice moment, a round does not count as a new moment, but it does count for your progress.',
+    grow: 'Rounds get 2 pictures longer each practice day, up to 20. That is the build-up from the guideline.', done_btn: 'Done', remaining: '{n} left today.',
+    ob4_5: 'A round starts with 10 pictures and gets 2 pictures longer each practice day, up to 20.',
+    step_of: 'Step {n} of {m}', today: 'Today', today_x: '{n} of 4 practice moments', today_done: 'Daily goal reached: 4 practice moments. Again tomorrow.',
     adv_up: 'You meet the goals at this step. Next step: {name}.', adv_up_yes: 'Yes, next step', adv_stay: 'Stay here a bit longer',
     adv_back: 'This step is still hard: fewer than 6 in 10 correct, or very slow. Advice: go back a step to {name}.', adv_back_yes: 'Step back', adv_back_no: 'Stay here anyway',
     adv_goal: 'Step 1 goal reached: for a week 80% or more correct, within 2 seconds, and left and right equally fast. The next phase of GMI is imagining movements.',
@@ -890,12 +896,12 @@ const I18N = {
     ob2_3: 'After each round you see how fast you were, for left and right separately.',
     ob2_why: 'Why: with CRPS, the brain often processes the affected foot differently. Recognising left and right activates the brain areas that prepare movement, without having to move the foot.',
     ob4_h: 'How to practise',
-    ob4_1: 'Short and often: a short round at least 4 times a day.',
+    ob4_1: 'A short round of about 1 minute, 4 times a day, spread over the day. For example in the morning, around noon, late afternoon and evening. At least 1 hour in between.',
     ob4_2: 'Making mistakes is normal.',
     ob4_3: 'Does the pain increase while practising? Then stop.',
     ob4_4: 'You start with the shoe. The app tells you when you can move a step on, or back.',
     ob_start: 'Start the first round', ob_look: 'Look around first',
-    next_h: 'Next round', next_meta: '{n} pictures · about {m} min',
+    next_h: 'Next round', next_meta: '{n} pictures · about 1 minute',
     start: 'Start round',
     adjust: 'Adjust yourself',
     rec_ready: 'You are ready for the next level: {name}.', rec_go: 'Go to level {n}',
@@ -911,7 +917,7 @@ const I18N = {
     feedback: 'Show after each answer whether it was right', photo_cat: 'Which photos',
     cat_all: 'All', cat_shoe: 'Shoe', cat_hand: 'Hand', cat_sock: 'Foot in sock', cat_foot: 'Foot',
     tips_h: 'Tips',
-    tip0: 'Start with 10 pictures per round, at least 4 times a day. If that goes well, add 1 or 2 each day.',
+    tip0: 'A short round 4 times a day, spread over the day, with at least 1 hour in between. Short and often works better than once for a long time.',
     tip1: 'Does the pain increase while practising? Then stop.',
     tip2: 'Notice it gets worse after practising, or the next day? Do fewer pictures or go back a step.',
     tip3: 'Does looking at the pictures hurt? Turn on speed mode, or imagine it is someone else\'s foot.',
@@ -1207,10 +1213,35 @@ function adviceHtml(adv) {
     ? `<div class="note"><p>${esc(t('adv_up', { name }))}</p><div class="row"><button type="button" class="btn primary" data-act="goStep" data-to="${adv.to}">${esc(t('adv_up_yes'))}</button><button type="button" class="btn quiet" data-act="snooze">${esc(t('adv_stay'))}</button></div></div>`
     : `<div class="note"><p>${esc(t('adv_back', { name }))}</p><div class="row"><button type="button" class="btn primary" data-act="goStep" data-to="${adv.to}">${esc(t('adv_back_yes'))}</button><button type="button" class="btn quiet" data-act="snooze">${esc(t('adv_back_no'))}</button></div></div>`;
 }
-const roundsToday = () => { const d = new Date().toDateString(); return state.sessions.filter((s) => s.trials.length >= 5 && new Date(s.start).toDateString() === d).length; };
-function todayHtml() {
-  const n = roundsToday();
-  return `<div class="today"><span class="muted">${esc(t('today'))}</span><span class="dots" aria-hidden="true">${[0, 1, 2, 3].map((k) => `<i class="${k < n ? 'on' : ''}"></i>`).join('')}</span><span>${esc(n >= 4 ? t('today_done') : t('today_x', { n }))}</span></div>`;
+// Guideline dose (NOI / European Pain Federation): short sessions at least 4 times a day,
+// spread over the day. Rounds less than an hour after the start of the previous counted
+// moment belong to that same moment.
+const GAP = 60 * 60e3;
+function momentsToday() {
+  const d = new Date().toDateString();
+  const ss = state.sessions.filter((s) => s.trials.length >= 5 && new Date(s.start).toDateString() === d).sort((x, y) => x.start - y.start);
+  const starts = [];
+  for (const s of ss) if (!starts.length || s.start - starts[starts.length - 1] >= GAP) starts.push(s.start);
+  return starts;
+}
+const fmtTime = (ts) => new Date(ts).toLocaleTimeString(S.lang, { hour: '2-digit', minute: '2-digit' });
+function todayHtml(withNext) {
+  const m = momentsToday(), n = m.length;
+  let next = '';
+  if (withNext && n > 0 && n < 4) {
+    const at = m[n - 1] + GAP;
+    next = `<p class="muted small">${esc(at > Date.now() ? t('next_at', { time: fmtTime(at) }) : t('next_now'))} ${esc(t('remaining', { n: 4 - n }))}</p>`;
+  }
+  return `<div class="group"><div class="today"><span class="muted">${esc(t('today'))}</span><span class="dots" aria-hidden="true">${[0, 1, 2, 3].map((k) => `<i class="${k < n ? 'on' : ''}"></i>`).join('')}</span><span>${esc(n >= 4 ? t('today_done') : t('today_x', { n }))}</span></div>${next}</div>`;
+}
+// Pictures per round: 10 to start, 2 more for each earlier practice day, up to 20
+// (the guideline builds the dose up gradually). A manual choice overrides this.
+function roundSize() {
+  if (S.countManual) return S.count;
+  const today = new Date().toDateString();
+  const days = new Set(state.sessions.filter((s) => s.trials.length >= 5).map((s) => new Date(s.start).toDateString()));
+  days.delete(today);
+  return Math.min(20, 10 + 2 * days.size);
 }
 // The plain-language left/right comparison shown after a round and on the home screen.
 function compareHtml(trials, prevTrials) {
@@ -1262,16 +1293,16 @@ function viewHome() {
   const lv = levelById(S.level);
   const si = stepIndex(S.level, S.angles);
   const last = state.sessions.slice().sort((a, b) => b.start - a.start)[0];
-  const mins = Math.max(1, Math.round((S.count * 3) / 60));
   const pv = previewURL(lv.id, 'L');
   const sub = si >= 0 ? t('step_of', { n: si + 1, m: LADDER.length }) + ' · ' + t('ang_n_' + S.angles) : '';
   return `<div class="stack">
   ${installBanner()}
   <section class="panel hero">
     <p class="eyebrow">${esc(t('next_h'))}</p>
-    <div class="next">${pv ? `<img class="pv" src="${pv}" alt="">` : '<div class="pv"></div>'}<div class="meta"><h2>${esc(t('lv_' + lv.id))}</h2><span class="muted small">${esc(sub)}</span><span class="muted small">${esc(t('next_meta', { n: S.count, m: mins }))}</span></div></div>
+    <div class="next">${pv ? `<img class="pv" src="${pv}" alt="">` : '<div class="pv"></div>'}<div class="meta"><h2>${esc(t('lv_' + lv.id))}</h2><span class="muted small">${esc(sub)}</span><span class="muted small">${esc(t('next_meta', { n: roundSize() }))}</span></div></div>
     <button type="button" class="btn primary big" data-act="start">${esc(t('start'))}</button>
-    ${todayHtml()}
+    ${todayHtml(true)}
+    <p class="muted small">${esc(t('sched'))}</p>
     ${adviceHtml(advice())}
   </section>
   ${last ? `<section class="panel"><div class="row spread"><h2>${esc(t('last_h'))}</h2><span class="muted small">${esc(fmtDT(last.start))}</span></div><p class="muted small">${esc(stepName(last.level, sessAng(last)))}</p>${compareHtml(last.trials)}</section>` : ''}
@@ -1282,12 +1313,12 @@ function viewHome() {
       </div>
       ${lv.id === 'photo' ? `<div class="field"><span class="lbl">${esc(t('photo_cat'))}</span>${seg('photoCat', [['all', t('cat_all')], ...PHOTO_CATS.map((c) => [c, t('cat_' + c)])], S.photoCat)}</div>` : ''}
       <div class="field"><span class="lbl">${esc(t('angles'))}</span>${seg('angles', [['easy', t('ang_easy')], ['mid', t('ang_mid')], ['all', t('ang_all')]], S.angles)}<span class="muted small">${esc(t('ang_hint_' + S.angles))}</span></div>
-      <div class="field"><span class="lbl">${esc(t('count'))}</span><div class="stepper"><button type="button" data-act="cnt" data-d="-2" aria-label="−2">−</button><output>${S.count}</output><button type="button" data-act="cnt" data-d="2" aria-label="+2">+</button></div></div>
+      <div class="field"><span class="lbl">${esc(t('count'))}</span><div class="stepper"><button type="button" data-act="cnt" data-d="-2" aria-label="−2">−</button><output>${roundSize()}</output><button type="button" data-act="cnt" data-d="2" aria-label="+2">+</button></div><span class="muted small">${esc(t('grow'))}</span></div>
       <div class="field"><span class="lbl">${esc(t('speed'))}</span>${seg('speed', SPEEDS.map((v) => [v, v ? num(v / 1000, v % 1000 ? 1 : 0) + ' s' : t('speed_off')]), S.speed)}<span class="muted small">${esc(t('speed_hint'))}</span></div>
       ${sw('feedback', S.feedback, t('feedback'))}
     </div>
   </details>
-  <details class="panel"><summary>${esc(t('tips_h'))}</summary><ul class="list">${['tip0', 'tip1', 'tip2', 'tip3'].map((k) => `<li>${esc(t(k))}</li>`).join('')}</ul></details>
+  <details class="panel"><summary>${esc(t('tips_h'))}</summary><ul class="list">${['tip0', 'grow', 'tip1', 'tip2', 'tip3'].map((k) => `<li>${esc(t(k))}</li>`).join('')}</ul></details>
   </div>`;
 }
 
@@ -1473,7 +1504,7 @@ function renderOb() {
     body = `<h1>${esc(t('ob2_h'))}</h1><ol class="numlist"><li>${esc(t('ob2_1'))}</li><li>${esc(t('ob2_2'))}</li><li>${esc(t('ob2_3'))}</li></ol><p class="note">${esc(t('ob2_why'))}</p>`;
     foot = `<button type="button" class="btn primary big" data-ob="next">${esc(t('ob_next'))}</button>`;
   } else {
-    body = `<h1>${esc(t('ob4_h'))}</h1><ol class="numlist"><li>${esc(t('ob4_1'))}</li><li>${esc(t('ob4_2'))}</li><li>${esc(t('ob4_3'))}</li><li>${esc(t('ob4_4'))}</li></ol>`;
+    body = `<h1>${esc(t('ob4_h'))}</h1><ol class="numlist"><li>${esc(t('ob4_1'))}</li><li>${esc(t('ob4_5'))}</li><li>${esc(t('ob4_2'))}</li><li>${esc(t('ob4_3'))}</li><li>${esc(t('ob4_4'))}</li></ol>`;
     foot = `<button type="button" class="btn primary big" data-ob="start">${esc(t('ob_start'))}</button><button type="button" class="btn quiet" data-ob="close">${esc(t('ob_look'))}</button>`;
   }
   $('#ob').innerHTML = `<div class="head"><div class="headrow">${s > 0 ? `<button type="button" class="btn quiet" data-ob="back">← ${esc(t('ob_back'))}</button>` : '<span></span>'}${S.onboarded ? `<button type="button" class="btn quiet" data-ob="close">${esc(t('close'))}</button>` : ''}</div>${steps}</div><div class="body">${body}</div><div class="foot">${foot}</div>`;
@@ -1528,7 +1559,7 @@ function buildPlan(n, lv, ang) {
 function startSession() {
   const lv = levelById(S.level);
   if (lv.id === 'photo' && !photoPool().length) return toast(t('no_photos'));
-  Object.assign(SES, { on: true, phase: null, level: lv, plan: buildPlan(S.count + (S.count % 2), lv, S.angles), specs: [], trials: [], i: 0, accepting: false, start: Date.now(), prevKey: null, rec: null, stopped: false, cfg: { angles: S.angles, speed: S.speed, feedback: S.feedback, photoCat: S.photoCat, count: S.count } });
+  Object.assign(SES, { on: true, phase: null, level: lv, plan: buildPlan(roundSize() + (roundSize() % 2), lv, S.angles), specs: [], trials: [], i: 0, accepting: false, start: Date.now(), prevKey: null, rec: null, stopped: false, counted: null, cfg: { angles: S.angles, speed: S.speed, feedback: S.feedback, photoCat: S.photoCat, count: roundSize() } });
   SES.steps = ['how', 'go', 'done'];
   SES.bufs = [0, 1].map(() => { const c = document.createElement('canvas'); c.width = c.height = 1024; return c; });
   $('#ses').hidden = false; document.body.style.overflow = 'hidden';
@@ -1645,16 +1676,18 @@ function stopRound() {
 function donePhase() {
   clearTimeout(SES.t1); clearTimeout(SES.t2); SES.accepting = false;
   const prev = sessionsAtStep(stepKey(SES.level.id, SES.cfg.angles)).slice(-1)[0];
+  const before = momentsToday().length;
   if (!SES.rec) {
     SES.rec = { id: uid(), start: SES.start, end: Date.now(), level: SES.level.id, cfg: SES.cfg, stopped: SES.stopped, trials: SES.trials };
     upsert('sessions', SES.rec);
+    SES.counted = momentsToday().length > before;
   }
   const rec = SES.rec, n = rec.trials.length;
   $('#ses').innerHTML = `${head('done', '')}<div class="body">
     <div><h1>${esc(t('done_h'))}</h1><p class="muted">${esc(SES.stopped ? t('done_stopped', { n }) : t('done_full', { n }))}</p></div>
     <section class="panel"><h2>${esc(t('speed_h'))}</h2>${compareHtml(rec.trials, prev && prev.id !== rec.id ? prev.trials : null)}</section>
-    <section class="panel">${todayHtml()}${(() => { const adv = advice(); return adv ? adviceHtml(adv) : ''; })()}</section>
-  </div><div class="foot"><button type="button" class="btn primary big" data-act="endClose">${esc(t('finish'))}</button><button type="button" class="btn" data-act="again">${esc(t('again'))}</button></div>`;
+    <section class="panel">${todayHtml(true)}${SES.counted === false ? `<p class="muted small">${esc(t('extra_round'))}</p>` : ''}${(() => { const adv = advice(); return adv ? adviceHtml(adv) : ''; })()}</section>
+  </div><div class="foot"><button type="button" class="btn primary big" data-act="endClose">${esc(t('done_btn'))}</button></div>`;
 }
 function closeSession() {
   SES.on = false; SES.phase = null; clearTimeout(SES.t1); clearTimeout(SES.t2); SES.accepting = false;
@@ -1739,7 +1772,7 @@ document.addEventListener('click', (e) => {
   else if (act === 'install') { doInstall().then(() => { if (!$('#ob').hidden && !$('#obL')) { $('#ob').hidden = true; document.body.style.overflow = ''; if (!S.onboarded) openOnboarding(); else refresh(); } }); }
   else if (act === 'instHow') openInstallHelp();
   else if (act === 'instClose') { $('#ob').hidden = true; $('#ob').innerHTML = ''; document.body.style.overflow = ''; if (!S.onboarded) openOnboarding(); else refresh(); }
-  else if (act === 'cnt') { S.count = clamp(S.count + +a.dataset.d, 6, 60); saveS(); refresh(); }
+  else if (act === 'cnt') { S.count = clamp(roundSize() + +a.dataset.d, 6, 60); S.countManual = true; saveS(); refresh(); }
   else if (act === 'sesClose') closeSession();
   else if (act === 'begin') showPhase('go');
   else if (act === 'stop') stopRound();
@@ -1809,7 +1842,7 @@ new MutationObserver(onTheme).observe(document.documentElement, { attributes: tr
   if (ENV.can && ENV.ios && !S.installSeen) { S.installSeen = true; saveS(); openInstallHelp(); }
   else if (!S.onboarded) openOnboarding();
 })();
-window.__lrt = { state, S, SES, advice, stepCheck, LADDER }; // used by automated tests only
+window.__lrt = { state, S, SES, advice, stepCheck, LADDER, momentsToday, roundSize }; // used by automated tests only
 })();
 
 </script>
