@@ -234,6 +234,12 @@ td.r, th.r { text-align: right; }
 @media (max-width: 360px) { .pain .scale { grid-template-columns: repeat(6, 1fr); } }
 @media (prefers-reduced-motion: reduce) { .switch::after, .progress > div { transition: none; } }
 
+/* daily goal */
+.today { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.dots { display: inline-flex; gap: 6px; }
+.dots i { width: 14px; height: 14px; border-radius: 50%; background: var(--line); display: inline-block; }
+.dots i.on { background: var(--accent); }
+
 </style>
 </head>
 <body>
@@ -731,6 +737,23 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 /* =================================================================== text */
 const I18N = {
   nl: {
+    // steps, daily goal and advice
+    ang_n_easy: 'weinig gedraaid', ang_n_mid: 'meer gedraaid', ang_n_all: 'alle kanten op',
+    step_of: 'Stap {n} van {m}', today: 'Vandaag', today_x: '{n} van 4 rondes', today_done: 'Vandaag gehaald. Meer mag, hoeft niet.',
+    adv_up: 'Goed bezig! Je bent klaar voor de volgende stap: {name}.', adv_up_yes: 'Ja, volgende stap', adv_stay: 'Nog even hier blijven',
+    adv_back: 'Deze stap is nu nog wat te moeilijk. Dat is heel normaal. Een stap terug helpt: {name}.', adv_back_yes: 'Stap terug', adv_back_no: 'Toch hier blijven',
+    adv_goal: 'Je hebt het doel gehaald: een week lang goed en snel, en links en rechts even snel. Knap! Blijf het af en toe doen om het vast te houden.',
+    adv_keep: 'Blijf op deze stap oefenen. De app zegt vanzelf wanneer je verder kunt, of juist een stapje terug.',
+    moved: 'Je oefent nu: {name}',
+    ready_h2: 'Klaar voor de volgende stap?', ready_sub: 'Alle rondes van de afgelopen 7 dagen op deze stap samen.',
+    k_acc: 'Beide kanten 80% of meer goed (nu {l} links, {r} rechts)', k_rt: 'Beide kanten 2 seconden of sneller (nu {l} en {r})',
+    k_gap: 'Links en rechts ongeveer even snel (nu {d} verschil)', k_amount: 'Genoeg geoefend: minstens 4 rondes op 2 dagen (nu {n} rondes, {d} dagen)',
+    k_week: 'Een week lang volgehouden (nu {d} van 7 dagen)', k_yes: 'Ja, alles gehaald.', k_no: 'Nog niet helemaal:',
+    step_now: 'nu', steps_h: 'Alle stappen',
+    inst_h: 'Zet de app eerst op je beginscherm', inst_p: 'Dan open je hem met één tik, werkt hij ook zonder internet en blijft je voortgang goed bewaard.',
+    inst_ios_1: 'Tik onderaan op de deelknop: het vierkantje met een pijl omhoog.', inst_ios_2: 'Scrol een stukje omlaag en kies "Zet op beginscherm".', inst_ios_3: 'Tik op "Voeg toe". Open de app voortaan alleen via het nieuwe icoontje.',
+    inst_and_btn: 'Zet op beginscherm', inst_and_1: 'Tik rechtsboven op de drie puntjes ⋮.', inst_and_2: 'Kies "App installeren" of "Toevoegen aan startscherm".', inst_and_3: 'Open de app voortaan via het nieuwe icoontje.',
+    inst_later: 'Later', inst_banner: 'Zet de app op je beginscherm, dan blijft je voortgang goed bewaard.', inst_how: 'Laat zien hoe',
     nav_home: 'Oefenen', nav_progress: 'Voortgang', nav_more: 'Meer',
     left: 'Links', right: 'Rechts', left_s: 'links', right_s: 'rechts',
     lv_shoe: 'Schoen', lvd_shoe: 'Een schoen, geen lichaam. De rustigste start.',
@@ -753,7 +776,7 @@ const I18N = {
     ob4_1: 'Kort en vaak: minstens 4 keer per dag een korte ronde.',
     ob4_2: 'Fouten zijn helemaal niet erg.',
     ob4_3: 'Wordt het onprettig? Stop meteen. Dat is ook goed.',
-    ob4_4: 'Je begint bij de schoen. Pas als dat makkelijk voelt ga je een niveau verder. De app zegt wanneer.',
+    ob4_4: 'Je begint bij de schoen. De app zegt vanzelf wanneer je een stap verder kunt, of juist terug.',
     ob_start: 'Start de eerste ronde', ob_look: 'Eerst rondkijken',
     next_h: 'Volgende ronde', next_meta: '{n} plaatjes · ongeveer {m} min',
     start: 'Start ronde',
@@ -791,7 +814,7 @@ const I18N = {
     v_prev_bigger: 'Vorige keer was het verschil {d}. Dat schommelt per ronde; kijk naar de lijn bij Voortgang.',
     v_few: 'Te weinig goede antwoorden om de snelheid te vergelijken.',
     again: 'Nog een ronde', finish: 'Opslaan en sluiten',
-    prog_level: 'Laat zien voor', nodata: 'Nog geen rondes op dit niveau.',
+    prog_level: 'Laat zien voor', nodata: 'Nog geen rondes op deze stap.',
     gap_h: 'Verschil tussen links en rechts', gap_sub: 'Hoeveel trager de ene kant is dan de andere. Het doel is richting 0.',
     gap_R: 'rechts trager', gap_L: 'links trager', gap_same: 'ongeveer gelijk', gap_axis: 'Boven de lijn: rechts trager. Onder de lijn: links trager.',
     gap_zero: 'geen verschil', gap_last: 'laatste ronde',
@@ -830,6 +853,23 @@ const I18N = {
     saved: 'Opgeslagen.',
   },
   en: {
+    // steps, daily goal and advice
+    ang_n_easy: 'slightly rotated', ang_n_mid: 'more rotated', ang_n_all: 'every direction',
+    step_of: 'Step {n} of {m}', today: 'Today', today_x: '{n} of 4 rounds', today_done: 'Done for today. More is fine, not needed.',
+    adv_up: 'Well done! You are ready for the next step: {name}.', adv_up_yes: 'Yes, next step', adv_stay: 'Stay here a bit longer',
+    adv_back: 'This step is still a bit hard right now. That is completely normal. A step back helps: {name}.', adv_back_yes: 'Step back', adv_back_no: 'Stay here anyway',
+    adv_goal: 'You reached the goal: good and fast for a week, with left and right equally fast. Well done! Keep doing it now and then to hold on to it.',
+    adv_keep: 'Keep practising this step. The app will tell you when you can move on, or take a step back.',
+    moved: 'You are now practising: {name}',
+    ready_h2: 'Ready for the next step?', ready_sub: 'All rounds of the past 7 days at this step together.',
+    k_acc: 'Both sides 80% or more correct (now {l} left, {r} right)', k_rt: 'Both sides 2 seconds or faster (now {l} and {r})',
+    k_gap: 'Left and right about equally fast (now {d} apart)', k_amount: 'Enough practice: at least 4 rounds on 2 days (now {n} rounds, {d} days)',
+    k_week: 'Kept up for a week (now {d} of 7 days)', k_yes: 'Yes, everything met.', k_no: 'Not quite yet:',
+    step_now: 'now', steps_h: 'All steps',
+    inst_h: 'First, put the app on your home screen', inst_p: 'Then it opens with one tap, works without internet and keeps your progress safe.',
+    inst_ios_1: 'Tap the share button at the bottom: the square with an arrow pointing up.', inst_ios_2: 'Scroll down a bit and choose "Add to Home Screen".', inst_ios_3: 'Tap "Add". From now on, only open the app with the new icon.',
+    inst_and_btn: 'Add to home screen', inst_and_1: 'Tap the three dots ⋮ at the top right.', inst_and_2: 'Choose "Install app" or "Add to Home screen".', inst_and_3: 'From now on, open the app with the new icon.',
+    inst_later: 'Later', inst_banner: 'Put the app on your home screen to keep your progress safe.', inst_how: 'Show me how',
     nav_home: 'Practice', nav_progress: 'Progress', nav_more: 'More',
     left: 'Left', right: 'Right', left_s: 'left', right_s: 'right',
     lv_shoe: 'Shoe', lvd_shoe: 'A shoe, no body. The gentlest start.',
@@ -852,7 +892,7 @@ const I18N = {
     ob4_1: 'Short and often: a short round at least 4 times a day.',
     ob4_2: 'Mistakes are completely fine.',
     ob4_3: 'Does it feel unpleasant? Stop right away. That is fine too.',
-    ob4_4: 'You start with the shoe. Only move up when it feels easy. The app tells you when.',
+    ob4_4: 'You start with the shoe. The app tells you when you can move a step on, or back.',
     ob_start: 'Start the first round', ob_look: 'Look around first',
     next_h: 'Next round', next_meta: '{n} pictures · about {m} min',
     start: 'Start round',
@@ -890,7 +930,7 @@ const I18N = {
     v_prev_bigger: 'Last time the difference was {d}. It varies per round; look at the line in Progress.',
     v_few: 'Too few correct answers to compare speed.',
     again: 'Another round', finish: 'Save and close',
-    prog_level: 'Show for', nodata: 'No rounds at this level yet.',
+    prog_level: 'Show for', nodata: 'No rounds at this step yet.',
     gap_h: 'Difference between left and right', gap_sub: 'How much slower one side is than the other. The goal is towards 0.',
     gap_R: 'right slower', gap_L: 'left slower', gap_same: 'about equal', gap_axis: 'Above the line: right slower. Below the line: left slower.',
     gap_zero: 'no difference', gap_last: 'last round',
@@ -931,7 +971,7 @@ const I18N = {
 };
 
 /* ============================================================== settings */
-const DEFAULTS = { lang: 'nl', tone: '#c99a76', halves: false, level: 'shoe', count: 10, angles: 'easy', speed: 0, feedback: true, photoCat: 'all', onboarded: false, progLevel: null, upCat: 'foot' };
+const DEFAULTS = { lang: 'nl', tone: '#c99a76', halves: false, level: 'shoe', count: 10, angles: 'easy', speed: 0, feedback: true, photoCat: 'all', onboarded: false, progStep: null, snooze: null, installSeen: false, upCat: 'foot' };
 let S = (() => { try { return Object.assign({}, DEFAULTS, JSON.parse(localStorage.getItem('lrt.settings') || '{}')); } catch (e) { return Object.assign({}, DEFAULTS); } })();
 function saveS() { try { localStorage.setItem('lrt.settings', JSON.stringify(S)); } catch (e) { /* storage unavailable */ } }
 const t = (k, v) => { let s = (I18N[S.lang] && I18N[S.lang][k]) ?? I18N.nl[k] ?? k; if (v) for (const x in v) s = s.split('{' + x + '}').join(v[x]); return s; };
@@ -1106,30 +1146,70 @@ const fmtS = (ms) => (ms == null ? '–' : num(ms / 1000, 2) + ' s');
 const fmtP = (p) => (p == null ? '–' : Math.round(p) + '%');
 const fmtDate = (ts) => new Date(ts).toLocaleDateString(S.lang, { day: 'numeric', month: 'short' });
 const fmtDT = (ts) => new Date(ts).toLocaleString(S.lang, { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-const sessionsAt = (lv) => state.sessions.filter((s) => s.level === lv && s.trials.length >= 5).sort((a, b) => a.start - b.start);
 // Norms (NOI / GMI handbook): 80%+ correct, about 2 s for hands and feet, left and right
-// about equal, and stable for at least a week before moving on.
-function sessionPass(s) {
-  const st = sideStats(s.trials);
-  return {
-    acc: st.L.acc != null && st.R.acc != null && st.L.acc >= 80 && st.R.acc >= 80,
-    rt: st.L.med != null && st.R.med != null && st.L.med <= 2000 && st.R.med <= 2000,
-    gap: st.L.med != null && st.R.med != null && Math.max(st.L.med, st.R.med) <= Math.min(st.L.med, st.R.med) * 1.15,
-  };
+// about equal, and stable for at least a week. Checks pool all rounds of the past days at the
+// current step, because one short round has only ~5 pictures per side and is too noisy.
+const ANG = ['easy', 'mid', 'all'];
+const LADDER = LEVELS.filter((l) => l.id !== 'photo').flatMap((l) => ANG.map((an) => ({ level: l.id, angles: an })));
+const stepKey = (lv, an) => lv + '|' + an;
+const sessAng = (s) => (s.cfg && s.cfg.angles) || 'easy';
+const stepIndex = (lv, an) => LADDER.findIndex((x) => x.level === lv && x.angles === an);
+const stepName = (lv, an) => t('lv_' + lv) + (lv === 'photo' ? '' : ' · ' + t('ang_n_' + an));
+const sessionsAtStep = (key) => state.sessions.filter((s) => s.trials.length >= 5 && stepKey(s.level, sessAng(s)) === key).sort((a, b) => a.start - b.start);
+const sessionsAt = (lv) => state.sessions.filter((s) => s.level === lv && s.trials.length >= 5).sort((a, b) => a.start - b.start);
+function pool(lv, an, days) {
+  const since = Date.now() - days * 864e5;
+  const ss = sessionsAtStep(stepKey(lv, an)).filter((s) => s.start >= since);
+  const trials = ss.flatMap((s) => s.trials);
+  return { ss, trials, st: sideStats(trials), days: new Set(ss.map((s) => new Date(s.start).toDateString())).size };
 }
-function readyFor(lv) {
-  const all = sessionsAt(lv);
-  const per = all.slice(-3).map(sessionPass);
-  // the run of most recent rounds that all pass, and how many days it spans
-  let k = all.length;
-  while (k > 0) { const p = sessionPass(all[k - 1]); if (!(p.acc && p.rt && p.gap)) break; k--; }
-  const run = all.slice(k);
-  const days = run.length ? Math.min(7, Math.floor((run[run.length - 1].start - run[0].start) / 864e5) + 1) : 0;
-  const distinct = new Set(run.map((s) => new Date(s.start).toDateString())).size;
-  const week = run.length >= 4 && distinct >= 3 && days >= 7;
-  const crit = ['acc', 'rt', 'gap'].map((c) => ({ k: c, ok: per.length === 3 && per.every((p) => p[c]) }));
-  crit.push({ k: 'week', ok: week, d: days });
-  return { n: all.length, crit, ready: per.length === 3 && crit.every((c) => c.ok) };
+function stepCheck(lv, an) {
+  const p = pool(lv, an, 7), st = p.st;
+  const acc = st.L.acc != null && st.R.acc != null && st.L.acc >= 80 && st.R.acc >= 80;
+  const rt = st.L.med != null && st.R.med != null && st.L.med <= 2000 && st.R.med <= 2000;
+  const gp = st.L.med != null && st.R.med != null ? Math.abs(st.L.med - st.R.med) / Math.min(st.L.med, st.R.med) : null;
+  const gap = gp != null && gp <= 0.15;
+  const amount = p.ss.length >= 4 && p.days >= 2;
+  const crit = [
+    { k: 'acc', ok: acc, v: { l: fmtP(st.L.acc), r: fmtP(st.R.acc) } },
+    { k: 'rt', ok: rt, v: { l: fmtS(st.L.med), r: fmtS(st.R.med) } },
+    { k: 'gap', ok: gap, v: { d: gp == null ? '–' : Math.round(gp * 100) + '%' } },
+    { k: 'amount', ok: amount, v: { n: p.ss.length, d: p.days } },
+  ];
+  const last = stepIndex(lv, an) === LADDER.length - 1;
+  if (last) {
+    const span = p.ss.length ? Math.min(7, Math.floor((Date.now() - p.ss[0].start) / 864e5) + 1) : 0;
+    crit.push({ k: 'week', ok: span >= 7 && p.days >= 4, v: { d: span } });
+  }
+  return { crit, ok: crit.every((c) => c.ok), pool: p, last };
+}
+// What the app suggests now: a step up, a step back, the goal reached, or nothing.
+function advice() {
+  const i = stepIndex(S.level, S.angles);
+  if (i < 0) return null;
+  if (S.snooze && S.snooze.key === stepKey(S.level, S.angles) && Date.now() - S.snooze.at < 20 * 3600e3) return null;
+  const back = pool(S.level, S.angles, 2);
+  if (i > 0 && back.trials.length >= 20) {
+    const st = back.st;
+    const bad = (s) => st[s].acc == null || st[s].acc < 60 || st[s].med == null || st[s].med > 3500;
+    if (bad('L') || bad('R')) return { type: 'back', to: i - 1 };
+  }
+  const c = stepCheck(S.level, S.angles);
+  if (c.ok) return c.last ? { type: 'goal' } : { type: 'up', to: i + 1 };
+  return null;
+}
+function adviceHtml(adv) {
+  if (!adv) return `<p class="muted small">${esc(t('adv_keep'))}</p>`;
+  if (adv.type === 'goal') return `<div class="note"><p>${esc(t('adv_goal'))}</p></div>`;
+  const to = LADDER[adv.to], name = stepName(to.level, to.angles);
+  return adv.type === 'up'
+    ? `<div class="note"><p>${esc(t('adv_up', { name }))}</p><div class="row"><button type="button" class="btn primary" data-act="goStep" data-to="${adv.to}">${esc(t('adv_up_yes'))}</button><button type="button" class="btn quiet" data-act="snooze">${esc(t('adv_stay'))}</button></div></div>`
+    : `<div class="note"><p>${esc(t('adv_back', { name }))}</p><div class="row"><button type="button" class="btn primary" data-act="goStep" data-to="${adv.to}">${esc(t('adv_back_yes'))}</button><button type="button" class="btn quiet" data-act="snooze">${esc(t('adv_back_no'))}</button></div></div>`;
+}
+const roundsToday = () => { const d = new Date().toDateString(); return state.sessions.filter((s) => s.trials.length >= 5 && new Date(s.start).toDateString() === d).length; };
+function todayHtml() {
+  const n = roundsToday();
+  return `<div class="today"><span class="muted">${esc(t('today'))}</span><span class="dots" aria-hidden="true">${[0, 1, 2, 3].map((k) => `<i class="${k < n ? 'on' : ''}"></i>`).join('')}</span><span>${esc(n >= 4 ? t('today_done') : t('today_x', { n }))}</span></div>`;
 }
 // The plain-language left/right comparison shown after a round and on the home screen.
 function compareHtml(trials, prevTrials) {
@@ -1178,31 +1258,30 @@ function refresh() {
 
 /* -------------------------------------------------------------- home */
 function viewHome() {
-  const lv = levelById(S.level), i = levelIdx(S.level);
+  const lv = levelById(S.level);
+  const si = stepIndex(S.level, S.angles);
   const last = state.sessions.slice().sort((a, b) => b.start - a.start)[0];
-  const rd = readyFor(lv.id);
-  let rec;
-  if (rd.ready && i < LEVELS.length - 2) rec = `<div class="note"><p>${esc(t('rec_ready', { name: t('lv_' + LEVELS[i + 1].id) }))}</p><div><button type="button" class="btn primary" data-act="levelUp">${esc(t('rec_go', { n: i + 2 }))}</button></div></div>`;
-  else if (rd.ready) rec = `<p class="muted small">${esc(t('rec_last'))}</p>`;
-  else rec = `<p class="muted small">${esc(rd.n < 3 ? t('rec_new') : t('rec_stay'))}</p>`;
   const mins = Math.max(1, Math.round((S.count * 3) / 60));
   const pv = previewURL(lv.id, 'L');
+  const sub = si >= 0 ? t('step_of', { n: si + 1, m: LADDER.length }) + ' · ' + t('ang_n_' + S.angles) : '';
   return `<div class="stack">
+  ${installBanner()}
   <section class="panel hero">
     <p class="eyebrow">${esc(t('next_h'))}</p>
-    <div class="next">${pv ? `<img class="pv" src="${pv}" alt="">` : '<div class="pv"></div>'}<div class="meta"><span class="muted small">${esc(t('level_x', { n: i + 1, m: LEVELS.length }))}</span><h2>${esc(t('lv_' + lv.id))}</h2><span class="muted small">${esc(t('next_meta', { n: S.count, m: mins }))}</span></div></div>
+    <div class="next">${pv ? `<img class="pv" src="${pv}" alt="">` : '<div class="pv"></div>'}<div class="meta"><h2>${esc(t('lv_' + lv.id))}</h2><span class="muted small">${esc(sub)}</span><span class="muted small">${esc(t('next_meta', { n: S.count, m: mins }))}</span></div></div>
     <button type="button" class="btn primary big" data-act="start">${esc(t('start'))}</button>
-    ${rec}
+    ${todayHtml()}
+    ${adviceHtml(advice())}
   </section>
-  ${last ? `<section class="panel"><div class="row spread"><h2>${esc(t('last_h'))}</h2><span class="muted small">${esc(fmtDT(last.start))}</span></div><p class="muted small">${esc(t('lv_' + last.level))}</p>${compareHtml(last.trials)}</section>` : ''}
+  ${last ? `<section class="panel"><div class="row spread"><h2>${esc(t('last_h'))}</h2><span class="muted small">${esc(fmtDT(last.start))}</span></div><p class="muted small">${esc(stepName(last.level, sessAng(last)))}</p>${compareHtml(last.trials)}</section>` : ''}
   <details class="panel" ${adjustOpen ? 'open' : ''} id="adjust"><summary>${esc(t('adjust'))}</summary>
     <div class="stack">
       <div class="group"><div><h3>${esc(t('choose_level'))}</h3><p class="muted small">${esc(t('choose_level_sub'))}</p></div>
-        <div class="levels">${LEVELS.map((l, k) => { const u = previewURL(l.id, 'L'); const r = readyFor(l.id); const n = sessionsAt(l.id).length; return `<button type="button" class="level" data-level="${l.id}" aria-pressed="${l.id === S.level}">${u ? `<img src="${u}" alt="">` : '<img alt="">'}<span class="tx"><span class="nm">${k + 1}. ${esc(t('lv_' + l.id))}${r.ready ? ' <span class="chip ready">✓</span>' : ''}</span><span class="ds">${esc(t('lvd_' + l.id))}${n ? ' · ' + n + '×' : ''}</span></span></button>`; }).join('')}</div>
+        <div class="levels">${LEVELS.map((l, k) => { const u = previewURL(l.id, 'L'); const n = sessionsAt(l.id).length; return `<button type="button" class="level" data-level="${l.id}" aria-pressed="${l.id === S.level}">${u ? `<img src="${u}" alt="">` : '<img alt="">'}<span class="tx"><span class="nm">${k + 1}. ${esc(t('lv_' + l.id))}</span><span class="ds">${esc(t('lvd_' + l.id))}${n ? ' · ' + n + '×' : ''}</span></span></button>`; }).join('')}</div>
       </div>
       ${lv.id === 'photo' ? `<div class="field"><span class="lbl">${esc(t('photo_cat'))}</span>${seg('photoCat', [['all', t('cat_all')], ...PHOTO_CATS.map((c) => [c, t('cat_' + c)])], S.photoCat)}</div>` : ''}
-      <div class="field"><span class="lbl">${esc(t('count'))}</span><div class="stepper"><button type="button" data-act="cnt" data-d="-2" aria-label="−2">−</button><output>${S.count}</output><button type="button" data-act="cnt" data-d="2" aria-label="+2">+</button></div></div>
       <div class="field"><span class="lbl">${esc(t('angles'))}</span>${seg('angles', [['easy', t('ang_easy')], ['mid', t('ang_mid')], ['all', t('ang_all')]], S.angles)}<span class="muted small">${esc(t('ang_hint_' + S.angles))}</span></div>
+      <div class="field"><span class="lbl">${esc(t('count'))}</span><div class="stepper"><button type="button" data-act="cnt" data-d="-2" aria-label="−2">−</button><output>${S.count}</output><button type="button" data-act="cnt" data-d="2" aria-label="+2">+</button></div></div>
       <div class="field"><span class="lbl">${esc(t('speed'))}</span>${seg('speed', SPEEDS.map((v) => [v, v ? num(v / 1000, v % 1000 ? 1 : 0) + ' s' : t('speed_off')]), S.speed)}<span class="muted small">${esc(t('speed_hint'))}</span></div>
       ${sw('feedback', S.feedback, t('feedback'))}
     </div>
@@ -1213,11 +1292,15 @@ function viewHome() {
 
 /* ---------------------------------------------------------- progress */
 function viewProgress() {
-  const lv = S.progLevel || S.level;
-  const ss = sessionsAt(lv);
-  const rd = readyFor(lv);
+  const cur = stepKey(S.level, S.angles);
+  const keys = [...new Set([cur, ...state.sessions.filter((s) => s.trials.length >= 5).map((s) => stepKey(s.level, sessAng(s)))])];
+  const key = keys.includes(S.progStep) ? S.progStep : cur;
+  const [lv, an] = key.split('|');
+  const ss = sessionsAtStep(key);
   const kind = lv === 'hand' ? 'hand' : 'foot';
-  const opts = LEVELS.map((l, k) => `<option value="${l.id}" ${l.id === lv ? 'selected' : ''}>${k + 1}. ${esc(t('lv_' + l.id))}</option>`).join('');
+  const order = (k) => { const [l, g] = k.split('|'); const i = stepIndex(l, g); return i < 0 ? 999 : i; };
+  const opts = keys.sort((x, y) => order(x) - order(y)).map((k) => { const [l, g] = k.split('|'); return `<option value="${k}" ${k === key ? 'selected' : ''}>${esc(stepName(l, g))}${k === cur ? ' (' + esc(t('step_now')) + ')' : ''}</option>`; }).join('');
+  const chk = stepCheck(S.level, S.angles);
   let gapHtml = `<p class="muted">${esc(t('nodata'))}</p>`;
   if (ss.length) {
     const lst = sideStats(ss[ss.length - 1].trials);
@@ -1225,9 +1308,7 @@ function viewProgress() {
     const label = g == null ? '' : Math.abs(g) <= Math.min(lst.L.med, lst.R.med) * 0.05 ? t('gap_same') : g > 0 ? t('gap_R') : t('gap_L');
     gapHtml = `<div><div class="bignum">${g == null ? '–' : fmtS(Math.abs(g))}</div><p class="muted small">${esc(label)} · ${esc(t('gap_last'))}</p></div><canvas class="chart" id="chGap"></canvas><p class="muted small">${esc(t('gap_axis'))} ${esc(t('per_day'))}</p>`;
   }
-  let readyHtml;
-  if (rd.n < 3) readyHtml = `<p class="muted">${esc(t('ready_need', { n: 3 - rd.n }))}</p>`;
-  else readyHtml = `<p>${esc(rd.ready ? t('ready_yes') : t('ready_no'))}</p><ul class="crit">${rd.crit.map((c) => `<li><span class="${c.ok ? 'ok' : 'no'}">${c.ok ? '✓' : '○'}</span><span>${esc(t('c_' + c.k, { d: c.d }))}</span></li>`).join('')}</ul>`;
+  const readyHtml = `<p>${esc(chk.ok ? t('k_yes') : t('k_no'))}</p><ul class="crit">${chk.crit.map((c) => `<li><span class="${c.ok ? 'ok' : 'no'}">${c.ok ? '✓' : '○'}</span><span>${esc(t('k_' + c.k, c.v))}</span></li>`).join('')}</ul>`;
   const recent = ss.slice(-10).flatMap((s) => s.trials);
   const views = VIEWS.filter((v) => recent.some((x) => x.view === v));
   const vt = views.map((v) => { const st = sideStats(recent.filter((x) => x.view === v)); return `<tr><td>${esc(viewName(v, kind))}</td>${['L', 'R'].map((s) => `<td class="r num">${fmtP(st[s].acc)}</td><td class="r num">${fmtS(st[s].med)}</td>`).join('')}</tr>`; }).join('');
@@ -1236,9 +1317,10 @@ function viewProgress() {
   return `<div class="stack">
   ${!DB.ok && !DB.ls ? `<div class="note">${esc(t('store_bad'))}</div>` : ''}
   <h1>${esc(t('nav_progress'))}</h1>
-  <div class="field"><label for="progLevel">${esc(t('prog_level'))}</label><select id="progLevel">${opts}</select></div>
+  <section class="panel">${todayHtml()}</section>
+  <div class="field"><label for="progStep">${esc(t('prog_level'))}</label><select id="progStep">${opts}</select></div>
   <section class="panel hero"><div><h2>${esc(t('gap_h'))}</h2><p class="muted small">${esc(t('gap_sub'))}</p></div>${gapHtml}</section>
-  <section class="panel"><h2>${esc(t('ready_h'))}</h2>${readyHtml}</section>
+  <section class="panel"><div><h2>${esc(t('ready_h2'))}</h2><p class="muted small">${esc(stepName(S.level, S.angles))} · ${esc(t('ready_sub'))}</p></div>${readyHtml}</section>
   <section class="panel"><div><h2>${esc(t('rt_h'))}</h2><p class="muted small">${esc(t('rt_sub'))}</p></div>${ss.length ? legend(true) + '<canvas class="chart" id="chRT"></canvas>' + `<p class="muted small">${esc(t('per_day'))}</p>` : `<p class="muted">${esc(t('nodata'))}</p>`}</section>
   <section class="panel"><div><h2>${esc(t('acc_h'))}</h2><p class="muted small">${esc(t('acc_sub'))}</p></div>${ss.length ? legend(true) + '<canvas class="chart" id="chAcc"></canvas>' : `<p class="muted">${esc(t('nodata'))}</p>`}</section>
   <section class="panel"><div><h2>${esc(t('view_h'))}</h2><p class="muted small">${esc(t('view_sub'))}</p></div>
@@ -1250,8 +1332,9 @@ function viewProgress() {
   </div>`;
 }
 function drawCharts() {
-  const lv = S.progLevel || S.level;
-  const ss = sessionsAt(lv);
+  const cur = stepKey(S.level, S.angles);
+  const key = S.progStep && sessionsAtStep(S.progStep).length ? S.progStep : cur;
+  const ss = sessionsAtStep(key);
   if (!ss.length) return;
   // one point per day: single rounds are short, so a day's rounds together give a steadier number
   const byDay = new Map();
@@ -1340,6 +1423,37 @@ function openPhotoSheet(id) {
     <div class="field"><label for="peView">${esc(t('view'))}</label><select id="peView">${VIEWS.map((v) => `<option value="${v}" ${p.view === v ? 'selected' : ''}>${esc(viewName(v, kind))}</option>`).join('')}</select></div></div>
     <div class="row spread"><button type="button" class="btn danger" data-act="phDel">${esc(confirmKey === 'p' + p.id ? t('del_confirm') : t('del'))}</button><button type="button" class="btn primary" data-act="phClose">${esc(t('close'))}</button></div></div>`;
   el.dataset.id = id; el.hidden = false;
+}
+
+/* ======================================================= home-screen install */
+// On a phone the app should run from its home-screen icon: it then opens like an app, works
+// offline and (on iPhone) keeps its own storage that Safari does not clear.
+const ENV = (() => {
+  const ua = navigator.userAgent || '';
+  const ios = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const android = /android/i.test(ua);
+  let standalone = false; try { standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; } catch (e) { /* old browser */ }
+  let top = false; try { top = window.top === window.self; } catch (e) { top = false; }
+  return { ios, android, can: !!window.LRT_STANDALONE && top && !standalone && (ios || android) };
+})();
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; if (!SES.on && $('#ob').hidden) refresh(); });
+window.addEventListener('appinstalled', () => { deferredPrompt = null; ENV.can = false; if (!SES.on && $('#ob').hidden) refresh(); });
+function installBanner() {
+  if (!ENV.can) return '';
+  return `<div class="note"><p>${esc(t('inst_banner'))}</p><div class="row">${deferredPrompt ? `<button type="button" class="btn primary" data-act="install">${esc(t('inst_and_btn'))}</button>` : ''}<button type="button" class="btn" data-act="instHow">${esc(t('inst_how'))}</button></div></div>`;
+}
+async function doInstall() {
+  if (!deferredPrompt) return openInstallHelp();
+  try { deferredPrompt.prompt(); await deferredPrompt.userChoice; } catch (e) { /* dismissed */ }
+  deferredPrompt = null; refresh();
+}
+function openInstallHelp() {
+  const steps = ENV.ios ? ['inst_ios_1', 'inst_ios_2', 'inst_ios_3'] : ['inst_and_1', 'inst_and_2', 'inst_and_3'];
+  $('#ob').innerHTML = `<div class="head"><div class="headrow"><span></span></div></div>
+    <div class="body"><h1>${esc(t('inst_h'))}</h1><p>${esc(t('inst_p'))}</p><ol class="numlist">${steps.map((k) => `<li>${esc(t(k))}</li>`).join('')}</ol></div>
+    <div class="foot">${!ENV.ios && deferredPrompt ? `<button type="button" class="btn primary big" data-act="install">${esc(t('inst_and_btn'))}</button>` : ''}<button type="button" class="btn ${!ENV.ios && deferredPrompt ? 'quiet' : 'big'}" data-act="instClose">${esc(t('inst_later'))}</button></div>`;
+  $('#ob').hidden = false; document.body.style.overflow = 'hidden';
 }
 
 /* ======================================================== welcome steps */
@@ -1529,7 +1643,7 @@ function stopRound() {
 }
 function donePhase() {
   clearTimeout(SES.t1); clearTimeout(SES.t2); SES.accepting = false;
-  const prev = sessionsAt(SES.level.id).slice(-1)[0];
+  const prev = sessionsAtStep(stepKey(SES.level.id, SES.cfg.angles)).slice(-1)[0];
   if (!SES.rec) {
     SES.rec = { id: uid(), start: SES.start, end: Date.now(), level: SES.level.id, cfg: SES.cfg, stopped: SES.stopped, trials: SES.trials };
     upsert('sessions', SES.rec);
@@ -1538,6 +1652,7 @@ function donePhase() {
   $('#ses').innerHTML = `${head('done', '')}<div class="body">
     <div><h1>${esc(t('done_h'))}</h1><p class="muted">${esc(SES.stopped ? t('done_stopped', { n }) : t('done_full', { n }))}</p></div>
     <section class="panel"><h2>${esc(t('speed_h'))}</h2>${compareHtml(rec.trials, prev && prev.id !== rec.id ? prev.trials : null)}</section>
+    <section class="panel">${todayHtml()}${(() => { const adv = advice(); return adv ? adviceHtml(adv) : ''; })()}</section>
   </div><div class="foot"><button type="button" class="btn primary big" data-act="endClose">${esc(t('finish'))}</button><button type="button" class="btn" data-act="again">${esc(t('again'))}</button></div>`;
 }
 function closeSession() {
@@ -1588,7 +1703,7 @@ document.addEventListener('click', (e) => {
     return;
   }
   const lvb = e.target.closest('[data-level]');
-  if (lvb) { S.level = lvb.dataset.level; saveS(); refresh(); return; }
+  if (lvb) { S.level = lvb.dataset.level; S.angles = 'easy'; S.snooze = null; saveS(); refresh(); return; }
   const setb = e.target.closest('[data-set]');
   if (setb) {
     const k = setb.dataset.set; let v = setb.dataset.val;
@@ -1613,7 +1728,16 @@ document.addEventListener('click', (e) => {
   if (!a) return;
   const act = a.dataset.act;
   if (act === 'start') startSession();
-  else if (act === 'levelUp') { S.level = LEVELS[levelIdx(S.level) + 1].id; saveS(); refresh(); window.scrollTo(0, 0); }
+  else if (act === 'goStep') {
+    const to = LADDER[+a.dataset.to]; if (!to) return;
+    S.level = to.level; S.angles = to.angles; S.snooze = null; saveS();
+    if (SES.on) closeSession(); else refresh();
+    window.scrollTo(0, 0); toast(t('moved', { name: stepName(to.level, to.angles) }));
+  }
+  else if (act === 'snooze') { S.snooze = { key: stepKey(S.level, S.angles), at: Date.now() }; saveS(); if (SES.on) a.closest('.note').remove(); else refresh(); }
+  else if (act === 'install') { doInstall().then(() => { if (!$('#ob').hidden && !$('#obL')) { $('#ob').hidden = true; document.body.style.overflow = ''; if (!S.onboarded) openOnboarding(); else refresh(); } }); }
+  else if (act === 'instHow') openInstallHelp();
+  else if (act === 'instClose') { $('#ob').hidden = true; $('#ob').innerHTML = ''; document.body.style.overflow = ''; if (!S.onboarded) openOnboarding(); else refresh(); }
   else if (act === 'cnt') { S.count = clamp(S.count + +a.dataset.d, 6, 60); saveS(); refresh(); }
   else if (act === 'sesClose') closeSession();
   else if (act === 'begin') showPhase('go');
@@ -1636,7 +1760,7 @@ document.addEventListener('click', (e) => {
 document.addEventListener('toggle', (e) => { if (e.target.id === 'adjust') adjustOpen = e.target.open; }, true);
 document.addEventListener('change', async (e) => {
   const id = e.target.id;
-  if (id === 'progLevel') { S.progLevel = e.target.value; saveS(); refresh(); }
+  if (id === 'progStep') { S.progStep = e.target.value; saveS(); refresh(); }
   else if (id === 'bkFile') { const f = e.target.files && e.target.files[0]; if (f) importBackup(await f.text()); }
   else if (id === 'upCat') { S.upCat = e.target.value; saveS(); refresh(); }
   else if (id === 'peCat' || id === 'peView') { const p = state.photos.find((x) => x.id === $('#sheet').dataset.id); if (p) { p[id === 'peCat' ? 'cat' : 'view'] = e.target.value; upsert('photos', p); } }
@@ -1681,9 +1805,10 @@ new MutationObserver(onTheme).observe(document.documentElement, { attributes: tr
   } catch (e) { DB.ls = false; }
   lsSave();
   refresh();
-  if (!S.onboarded) openOnboarding();
+  if (ENV.can && ENV.ios && !S.installSeen) { S.installSeen = true; saveS(); openInstallHelp(); }
+  else if (!S.onboarded) openOnboarding();
 })();
-window.__lrt = { state, S, SES }; // used by automated tests only
+window.__lrt = { state, S, SES, advice, stepCheck, LADDER }; // used by automated tests only
 })();
 
 </script>
