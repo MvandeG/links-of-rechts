@@ -1,0 +1,17 @@
+{
+  "name": "Links of Rechts",
+  "short_name": "Links/Rechts",
+  "description": "Links/rechts herkennen: stap 1 van graded motor imagery.",
+  "lang": "nl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#edf1f0",
+  "theme_color": "#2b605b",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
