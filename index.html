@@ -241,6 +241,16 @@ td.r, th.r { text-align: right; }
 .dots i { width: 14px; height: 14px; border-radius: 50%; background: var(--line); display: inline-block; }
 .dots i.on { background: var(--accent); }
 
+/* delete a round */
+.slist .it.hist { flex-direction: row; align-items: center; gap: 12px; }
+.slist .it.hist .hx { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.icon-btn { flex: none; width: 48px; height: 48px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); display: grid; place-items: center; padding: 0; }
+.icon-btn:active { background: var(--accent-soft); color: var(--accent); }
+.btn.danger-fill { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.left { align-self: flex-start; padding-left: 0; padding-right: 0; }
+.toast { display: flex; align-items: center; gap: 14px; }
+.toast-btn { border: 0; background: transparent; color: var(--bg); font-family: var(--f-display); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; padding: 6px 2px; min-height: 40px; }
+
 </style>
 </head>
 <body>
@@ -838,6 +848,7 @@ const I18N = {
     set_tone: 'Huidkleur van de 3D-voet en -hand', set_tone_sub: 'Een kleur die anders is dan je eigen huid kan het makkelijker maken.',
     set_lang: 'Taal', reshow: 'Uitleg opnieuw bekijken',
     del: 'Verwijderen', del_confirm: 'Tik nog een keer om te verwijderen',
+    rd_h: 'Ronde verwijderen?', rd_p: 'Deze ronde telt dan niet meer mee in je voortgang, grafieken en dagdoel.', rd_yes: 'Ja, verwijder deze ronde', rd_no: 'Annuleren', rd_done: 'Ronde verwijderd.', rd_undo: 'Ongedaan maken', rd_back: 'Ronde teruggezet.', rd_link: 'Per ongeluk gedaan? Verwijder deze ronde', hist_sub: 'Tik op het prullenbakje om een ronde te verwijderen, bijvoorbeeld als je hem per ongeluk hebt gedaan.', hist_more: 'Toon oudere rondes', pics: '{n} plaatjes',
     ph_h: "Eigen foto's", ph_sub: 'Optioneel. Voor later, als de 3D-niveaus makkelijk gaan.',
     ph_g1: 'Fotografeer alleen rechter voeten, handen en schoenen. De app maakt de linkse zelf door te spiegelen.',
     ph_g2: 'Effen achtergrond, goed licht, voet groot in beeld, met een stukje enkel.',
@@ -957,6 +968,7 @@ const I18N = {
     set_tone: 'Skin colour of the 3D foot and hand', set_tone_sub: 'A colour different from your own skin can make it easier.',
     set_lang: 'Language', reshow: 'Show the explanation again',
     del: 'Delete', del_confirm: 'Tap again to delete',
+    rd_h: 'Delete round?', rd_p: 'This round will then no longer count towards your progress, charts and daily goal.', rd_yes: 'Yes, delete this round', rd_no: 'Cancel', rd_done: 'Round deleted.', rd_undo: 'Undo', rd_back: 'Round restored.', rd_link: 'Done by accident? Delete this round', hist_sub: 'Tap the bin to delete a round, for example if you did it by accident.', hist_more: 'Show older rounds', pics: '{n} pictures',
     ph_h: 'Your own photos', ph_sub: 'Optional. For later, once the 3D levels feel easy.',
     ph_g1: 'Photograph only right feet, hands and shoes. The app makes the left ones by mirroring.',
     ph_g2: 'Plain background, good light, foot large in the frame, with a bit of ankle.',
@@ -1268,7 +1280,11 @@ let tab = 'home';
 let photoMirrorPreview = false, adjustOpen = false;
 let confirmKey = null, confirmTimer = 0;
 function armConfirm(k) { confirmKey = k; clearTimeout(confirmTimer); confirmTimer = setTimeout(() => { confirmKey = null; if (!SES.on) refresh(); }, 4000); }
-function toast(msg) { const el = $('#toast'); el.textContent = msg; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (el.hidden = true), 2800); }
+function toast(msg, action, fn) {
+  const el = $('#toast'); clearTimeout(toast.t); toast.fn = fn || null;
+  el.innerHTML = `<span>${esc(msg)}</span>${action ? `<button type="button" class="toast-btn" data-act="toastAct">${esc(action)}</button>` : ''}`;
+  el.hidden = false; toast.t = setTimeout(() => { el.hidden = true; toast.fn = null; }, action ? 7000 : 2800);
+}
 const seg = (name, opts, cur) => `<div class="seg" role="group">${opts.map(([v, l]) => `<button type="button" data-set="${name}" data-val="${esc(v)}" aria-pressed="${String(v) === String(cur)}">${esc(l)}</button>`).join('')}</div>`;
 const sw = (name, on, label) => `<div class="toggle"><span>${esc(label)}</span><button type="button" class="switch" role="switch" data-toggle="${name}" aria-checked="${!!on}" aria-label="${esc(label)}"></button></div>`;
 const ICONS = {
@@ -1305,7 +1321,7 @@ function viewHome() {
     <p class="muted small">${esc(t('sched'))}</p>
     ${adviceHtml(advice())}
   </section>
-  ${last ? `<section class="panel"><div class="row spread"><h2>${esc(t('last_h'))}</h2><span class="muted small">${esc(fmtDT(last.start))}</span></div><p class="muted small">${esc(stepName(last.level, sessAng(last)))}</p>${compareHtml(last.trials)}</section>` : ''}
+  ${last ? `<section class="panel"><div class="row spread"><h2>${esc(t('last_h'))}</h2><span class="muted small">${esc(fmtDT(last.start))}</span></div><p class="muted small">${esc(stepName(last.level, sessAng(last)))}</p>${compareHtml(last.trials)}<button type="button" class="btn quiet small left" data-act="rdAsk" data-id="${last.id}">${esc(t('rd_link'))}</button></section>` : ''}
   <details class="panel" ${adjustOpen ? 'open' : ''} id="adjust"><summary>${esc(t('adjust'))}</summary>
     <div class="stack">
       <div class="group"><div><h3>${esc(t('choose_level'))}</h3><p class="muted small">${esc(t('choose_level_sub'))}</p></div>
@@ -1345,7 +1361,7 @@ function viewProgress() {
   const views = VIEWS.filter((v) => recent.some((x) => x.view === v));
   const vt = views.map((v) => { const st = sideStats(recent.filter((x) => x.view === v)); return `<tr><td>${esc(viewName(v, kind))}</td>${['L', 'R'].map((s) => `<td class="r num">${fmtP(st[s].acc)}</td><td class="r num">${fmtS(st[s].med)}</td>`).join('')}</tr>`; }).join('');
   const legend = (target) => `<div class="legend">${['L', 'R'].map((s) => `<span><span class="dot ${s}"></span>${esc(sideName(s))}</span>`).join('')}${target ? `<span>- - ${esc(t('goal'))}</span>` : ''}</div>`;
-  const hist = ss.slice().reverse().slice(0, 20);
+  const hist = ss.slice().reverse().slice(0, histLimit), more = ss.length > histLimit;
   return `<div class="stack">
   ${!DB.ok && !DB.ls ? `<div class="note">${esc(t('store_bad'))}</div>` : ''}
   <h1>${esc(t('nav_progress'))}</h1>
@@ -1358,8 +1374,8 @@ function viewProgress() {
   <section class="panel"><div><h2>${esc(t('view_h'))}</h2><p class="muted small">${esc(t('view_sub'))}</p></div>
     ${views.length ? `<div class="tbl-wrap"><table><thead><tr><th>${esc(t('view'))}</th><th class="r" colspan="2"><span class="dot L"></span>${esc(t('left'))}</th><th class="r" colspan="2"><span class="dot R"></span>${esc(t('right'))}</th></tr></thead><tbody>${vt}</tbody></table></div>` : `<p class="muted">${esc(t('nodata'))}</p>`}
   </section>
-  <section class="panel"><h2>${esc(t('hist_h'))}</h2>
-    ${hist.length ? `<div class="slist">${hist.map((s) => { const st = sideStats(s.trials); const g = gapOf(st); return `<div class="it"><span class="muted small">${esc(fmtDT(s.start))}</span><div class="small num"><span class="dot L"></span>${fmtS(st.L.med)} · ${fmtP(st.L.acc)} &nbsp; <span class="dot R"></span>${fmtS(st.R.med)} · ${fmtP(st.R.acc)}</div><div class="small muted">${g != null ? esc(t('gap')) + ': ' + fmtS(Math.abs(g)) + (Math.abs(g) > 0 ? ' (' + esc(g > 0 ? t('gap_R') : t('gap_L')) + ')' : '') : ''}</div></div>`; }).join('')}</div>` : `<p class="muted">${esc(t('nodata'))}</p>`}
+  <section class="panel"><div><h2>${esc(t('hist_h'))}</h2>${hist.length ? `<p class="muted small">${esc(t('hist_sub'))}</p>` : ''}</div>
+    ${hist.length ? `<div class="slist">${hist.map((s) => { const st = sideStats(s.trials); const g = gapOf(st); return `<div class="it hist"><div class="hx"><span class="muted small">${esc(fmtDT(s.start))}</span><div class="small num"><span class="dot L"></span>${fmtS(st.L.med)} · ${fmtP(st.L.acc)} &nbsp; <span class="dot R"></span>${fmtS(st.R.med)} · ${fmtP(st.R.acc)}</div><div class="small muted">${g != null ? esc(t('gap')) + ': ' + fmtS(Math.abs(g)) + (Math.abs(g) > 0 ? ' (' + esc(g > 0 ? t('gap_R') : t('gap_L')) + ')' : '') : ''}</div></div><button type="button" class="icon-btn" data-act="rdAsk" data-id="${s.id}" aria-label="${esc(t('del'))} ${esc(fmtDT(s.start))}">${TRASH}</button></div>`; }).join('')}</div>${more ? `<button type="button" class="btn" data-act="histMore">${esc(t('hist_more'))}</button>` : ''}` : `<p class="muted">${esc(t('nodata'))}</p>`}
   </section>
   </div>`;
 }
@@ -1455,6 +1471,26 @@ function openPhotoSheet(id) {
     <div class="field"><label for="peView">${esc(t('view'))}</label><select id="peView">${VIEWS.map((v) => `<option value="${v}" ${p.view === v ? 'selected' : ''}>${esc(viewName(v, kind))}</option>`).join('')}</select></div></div>
     <div class="row spread"><button type="button" class="btn danger" data-act="phDel">${esc(confirmKey === 'p' + p.id ? t('del_confirm') : t('del'))}</button><button type="button" class="btn primary" data-act="phClose">${esc(t('close'))}</button></div></div>`;
   el.dataset.id = id; el.hidden = false;
+}
+
+/* ======================================================== delete a round */
+const TRASH = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg>';
+let histLimit = 20;
+function openDeleteSheet(id) {
+  const s = state.sessions.find((x) => x.id === id); if (!s) return;
+  const el = $('#sheet');
+  el.innerHTML = `<div class="inner" role="dialog" aria-label="${esc(t('rd_h'))}"><h2>${esc(t('rd_h'))}</h2>
+    <div class="group"><p><b>${esc(fmtDT(s.start))}</b></p><p class="muted small">${esc(stepName(s.level, sessAng(s)))} · ${esc(t('pics', { n: s.trials.length }))}</p></div>
+    ${compareHtml(s.trials)}
+    <p class="muted">${esc(t('rd_p'))}</p>
+    <div class="group"><button type="button" class="btn big danger-fill" data-act="rdYes" data-id="${s.id}">${esc(t('rd_yes'))}</button><button type="button" class="btn big" data-act="rdNo">${esc(t('rd_no'))}</button></div></div>`;
+  el.dataset.id = ''; el.hidden = false;
+}
+function deleteRound(id) {
+  const s = state.sessions.find((x) => x.id === id); if (!s) return;
+  remove('sessions', id);
+  $('#sheet').hidden = true; refresh();
+  toast(t('rd_done'), t('rd_undo'), () => { upsert('sessions', s); refresh(); toast(t('rd_back')); });
 }
 
 /* ======================================================= home-screen install */
@@ -1757,7 +1793,7 @@ document.addEventListener('click', (e) => {
   if (ph) { openPhotoSheet(ph.dataset.photo); return; }
   const ps = e.target.closest('[data-pset]');
   if (ps) { const p = state.photos.find((x) => x.id === $('#sheet').dataset.id); if (p) { p.side = ps.dataset.val; upsert('photos', p); PREV.clear(); openPhotoSheet(p.id); } return; }
-  if (e.target.id === 'sheet') { $('#sheet').hidden = true; refresh(); return; }
+  if (e.target.id === 'sheet') { $('#sheet').hidden = true; if ($('#sheet').dataset.id) refresh(); return; }
   const a = e.target.closest('[data-act]');
   if (!a) return;
   const act = a.dataset.act;
@@ -1783,6 +1819,11 @@ document.addEventListener('click', (e) => {
   else if (act === 'copyCsv') copyText(backupCsv());
   else if (act === 'import') importBackup($('#bk').value);
   else if (act === 'phClose') { $('#sheet').hidden = true; refresh(); }
+  else if (act === 'rdAsk') openDeleteSheet(a.dataset.id);
+  else if (act === 'rdYes') deleteRound(a.dataset.id);
+  else if (act === 'rdNo') { $('#sheet').hidden = true; }
+  else if (act === 'histMore') { histLimit += 20; refresh(); }
+  else if (act === 'toastAct') { const fn = toast.fn; clearTimeout(toast.t); $('#toast').hidden = true; toast.fn = null; if (fn) fn(); }
   else if (act === 'phDel') {
     const id = $('#sheet').dataset.id, k = 'p' + id;
     if (confirmKey === k) { confirmKey = null; remove('photos', id); imgCache.delete(id); PREV.clear(); $('#sheet').hidden = true; refresh(); }
@@ -1794,7 +1835,7 @@ document.addEventListener('click', (e) => {
 document.addEventListener('toggle', (e) => { if (e.target.id === 'adjust') adjustOpen = e.target.open; }, true);
 document.addEventListener('change', async (e) => {
   const id = e.target.id;
-  if (id === 'progStep') { S.progStep = e.target.value; saveS(); refresh(); }
+  if (id === 'progStep') { S.progStep = e.target.value; histLimit = 20; saveS(); refresh(); }
   else if (id === 'bkFile') { const f = e.target.files && e.target.files[0]; if (f) importBackup(await f.text()); }
   else if (id === 'upCat') { S.upCat = e.target.value; saveS(); refresh(); }
   else if (id === 'peCat' || id === 'peView') { const p = state.photos.find((x) => x.id === $('#sheet').dataset.id); if (p) { p[id === 'peCat' ? 'cat' : 'view'] = e.target.value; upsert('photos', p); } }
@@ -1842,7 +1883,7 @@ new MutationObserver(onTheme).observe(document.documentElement, { attributes: tr
   if (ENV.can && ENV.ios && !S.installSeen) { S.installSeen = true; saveS(); openInstallHelp(); }
   else if (!S.onboarded) openOnboarding();
 })();
-window.__lrt = { state, S, SES, advice, stepCheck, LADDER, momentsToday, roundSize }; // used by automated tests only
+window.__lrt = { state, S, SES, advice, stepCheck, LADDER, momentsToday, roundSize, sessionsAtStep }; // used by automated tests only
 })();
 
 </script>
