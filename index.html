@@ -848,7 +848,7 @@ const I18N = {
     set_tone: 'Huidkleur van de 3D-voet en -hand', set_tone_sub: 'Een kleur die anders is dan je eigen huid kan het makkelijker maken.',
     set_lang: 'Taal', reshow: 'Uitleg opnieuw bekijken',
     del: 'Verwijderen', del_confirm: 'Tik nog een keer om te verwijderen',
-    rd_h: 'Ronde verwijderen?', rd_p: 'Deze ronde telt dan niet meer mee in je voortgang, grafieken en dagdoel.', rd_yes: 'Ja, verwijder deze ronde', rd_no: 'Annuleren', rd_done: 'Ronde verwijderd.', rd_undo: 'Ongedaan maken', rd_back: 'Ronde teruggezet.', rd_link: 'Per ongeluk gedaan? Verwijder deze ronde', hist_sub: 'Tik op het prullenbakje om een ronde te verwijderen, bijvoorbeeld als je hem per ongeluk hebt gedaan.', hist_more: 'Toon oudere rondes', pics: '{n} plaatjes',
+    rd_h: 'Ronde verwijderen?', rd_p: 'Deze ronde telt dan niet meer mee in je voortgang, grafieken en dagdoel.', rd_yes: 'Ja, verwijder deze ronde', rd_no: 'Annuleren', rd_done: 'Ronde verwijderd.', rd_undo: 'Ongedaan maken', rd_back: 'Ronde teruggezet.', hist_sub: 'Tik op het prullenbakje om een ronde te verwijderen, bijvoorbeeld als je hem per ongeluk hebt gedaan.', hist_more: 'Toon oudere rondes', pics: '{n} plaatjes',
     ph_h: "Eigen foto's", ph_sub: 'Optioneel. Voor later, als de 3D-niveaus makkelijk gaan.',
     ph_g1: 'Fotografeer alleen rechter voeten, handen en schoenen. De app maakt de linkse zelf door te spiegelen.',
     ph_g2: 'Effen achtergrond, goed licht, voet groot in beeld, met een stukje enkel.',
@@ -968,7 +968,7 @@ const I18N = {
     set_tone: 'Skin colour of the 3D foot and hand', set_tone_sub: 'A colour different from your own skin can make it easier.',
     set_lang: 'Language', reshow: 'Show the explanation again',
     del: 'Delete', del_confirm: 'Tap again to delete',
-    rd_h: 'Delete round?', rd_p: 'This round will then no longer count towards your progress, charts and daily goal.', rd_yes: 'Yes, delete this round', rd_no: 'Cancel', rd_done: 'Round deleted.', rd_undo: 'Undo', rd_back: 'Round restored.', rd_link: 'Done by accident? Delete this round', hist_sub: 'Tap the bin to delete a round, for example if you did it by accident.', hist_more: 'Show older rounds', pics: '{n} pictures',
+    rd_h: 'Delete round?', rd_p: 'This round will then no longer count towards your progress, charts and daily goal.', rd_yes: 'Yes, delete this round', rd_no: 'Cancel', rd_done: 'Round deleted.', rd_undo: 'Undo', rd_back: 'Round restored.', hist_sub: 'Tap the bin to delete a round, for example if you did it by accident.', hist_more: 'Show older rounds', pics: '{n} pictures',
     ph_h: 'Your own photos', ph_sub: 'Optional. For later, once the 3D levels feel easy.',
     ph_g1: 'Photograph only right feet, hands and shoes. The app makes the left ones by mirroring.',
     ph_g2: 'Plain background, good light, foot large in the frame, with a bit of ankle.',
@@ -1321,7 +1321,7 @@ function viewHome() {
     <p class="muted small">${esc(t('sched'))}</p>
     ${adviceHtml(advice())}
   </section>
-  ${last ? `<section class="panel"><div class="row spread"><h2>${esc(t('last_h'))}</h2><span class="muted small">${esc(fmtDT(last.start))}</span></div><p class="muted small">${esc(stepName(last.level, sessAng(last)))}</p>${compareHtml(last.trials)}<button type="button" class="btn quiet small left" data-act="rdAsk" data-id="${last.id}">${esc(t('rd_link'))}</button></section>` : ''}
+  ${last ? `<section class="panel"><div class="row spread"><h2>${esc(t('last_h'))}</h2><span class="muted small">${esc(fmtDT(last.start))}</span></div><p class="muted small">${esc(stepName(last.level, sessAng(last)))}</p>${compareHtml(last.trials)}</section>` : ''}
   <details class="panel" ${adjustOpen ? 'open' : ''} id="adjust"><summary>${esc(t('adjust'))}</summary>
     <div class="stack">
       <div class="group"><div><h3>${esc(t('choose_level'))}</h3><p class="muted small">${esc(t('choose_level_sub'))}</p></div>
